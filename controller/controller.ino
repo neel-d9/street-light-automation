@@ -16,7 +16,7 @@ void setup() {
 
   // Initialize sensors and outputs
   Wire.begin();
-  lightMeter.begin();
+  lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0x5C);
   pinMode(pirPin1, INPUT);
   pinMode(pirPin2, INPUT);
   pinMode(ledPin1, OUTPUT);
@@ -30,7 +30,9 @@ void loop() {
   int pirState2 = digitalRead(pirPin2);
 
   // === Send sensor data to Raspberry Pi ===
-  // Format: lux,pir1,pir2
+  // Format: timestamp,lux,pir1,pir2
+  Serial.print(millis());
+  Serial.print(",");
   Serial.print(lux);
   Serial.print(",");
   Serial.print(pirState1);
