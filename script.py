@@ -57,7 +57,7 @@ while True:
                 pir2_status = int(parts[3])
 
                 # Get the final command
-                loctime = time.time() + uptime_ms / 1000.00
+                loctime = 16200 + time.time() + uptime_ms / 1000.00
                 final_command = get_final_light_command(loctime, current_lux, pir1_status, pir2_status)
                 # Send the command character back to the Arduino
                 arduino.write(final_command.encode())
