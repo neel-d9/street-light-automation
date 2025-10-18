@@ -1,3 +1,4 @@
+
 import serial
 import time
 import joblib
@@ -15,7 +16,7 @@ except FileNotFoundError:
 # Note: The port name '/dev/ttyUSB0' might be different on your system.
 # Common names are /dev/ttyACM0 or /dev/ttyUSB1.
 try:
-    arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, timeout=1)
+    arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)
     time.sleep(2) # Wait for the connection to establish
     print("Connected to Arduino.")
 except serial.SerialException:
@@ -27,10 +28,10 @@ def get_final_light_command(timestamp, live_lux, live_pir1, live_pir2):
     """
     Final decision function combining the ML model's context with live PIR data.
     """
-    data = pd.DataFrame([live_lux, timestamp], columns=["ambience_lux", "seconds_of_day"])
+    data = pd.DataFrame([(live_lux, timestamp)], columns=["ambience_lux", "seconds_of_day"])
     night_mode_active = luminosity_model.predict(data)
-
-    if not night_mode_active:
+    print(night_mode_active)
+    if night_mode_active==0:
         return '0' # OFF
     else:
         if live_pir1 == 1 or live_pir2 == 1:
@@ -45,6 +46,7 @@ while True:
         # Check if there is data waiting from the Arduino
         if arduino.in_waiting > 0:
             # Read a line of data and decode it
+
             line = arduino.readline().decode('utf-8').rstrip()
             # Parse the data
             parts = line.split(',')
@@ -55,7 +57,7 @@ while True:
                 pir2_status = int(parts[3])
 
                 # Get the final command
-		loctime = time.time() + uptime_ms / 1000.00
+                loctime = time.time() + uptime_ms / 1000.00
                 final_command = get_final_light_command(loctime, current_lux, pir1_status, pir2_status)
                 # Send the command character back to the Arduino
                 arduino.write(final_command.encode())
