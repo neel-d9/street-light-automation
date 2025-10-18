@@ -1,3 +1,4 @@
+
 #include <Wire.h>
 #include <BH1750.h>
 
@@ -37,7 +38,7 @@ void loop() {
   Serial.print(",");
   Serial.print(pirState1);
   Serial.print(",");
-  Serial.println(pirState2);
+  Serial.println(0);//pirState2);
 
   // === Listen for a command from the Raspberry Pi ===
   if (Serial.available() > 0) {
