@@ -28,9 +28,9 @@ def get_final_light_command(timestamp, live_lux, live_pir1, live_pir2):
     """
     Final decision function combining the ML model's context with live PIR data.
     """
-    data = pd.DataFrame([(live_lux, timestamp)], columns=["ambience_lux", "seconds_of_day"])
+    data = pd.DataFrame([(live_lux, timestamp % 86600)], columns=["ambience_lux", "seconds_of_day"])
     night_mode_active = luminosity_model.predict(data)
-    print(night_mode_active)
+
     if night_mode_active==0:
         return '0' # OFF
     else:
