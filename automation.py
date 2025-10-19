@@ -25,8 +25,8 @@ def suggest_action(timestamp, live_lux, live_pir1, live_pir2):
     """
     Final decision function combining the ML model's context with live PIR data.
     """
-    data = pd.DataFrame([(live_lux, timestamp % 86600)], columns=["ambience_lux", "seconds_of_day"])
-    night_mode_active = luminosity_model.predict(data)
+    data = pd.DataFrame([(live_lux, timestamp)], columns=["ambience_lux", "seconds_of_day"])
+    night_mode_active = luminosity_model.predict(data)[0]
 
     if night_mode_active == 0:
         return '0' # OFF
@@ -36,14 +36,13 @@ def suggest_action(timestamp, live_lux, live_pir1, live_pir2):
         else:
             return '1' # DIM
 
-# --- Main Project Loop ---
-print("Starting main control loop...")
+# --- Main loop ---
+print("Beginning operation. Press Ctrl+C to exit.")
 while True:
     try:
         # Check if there is data waiting from the Arduino
         if arduino.in_waiting > 0:
             # Read a line of data and decode it
-
             line = arduino.readline().decode('utf-8').rstrip()
             # Parse the data
             parts = line.split(',')
@@ -59,7 +58,7 @@ while True:
                 # Send the action command to the Arduino
                 arduino.write(action.encode())
                 # Print status for debugging
-                print(f"Time: {time.strftime('%H:%M:%S', now)}, Lux: {current_lux}, PIRs: [{pir1_status},{pir2_status}], Suggested Light Level: {action}")
+                print(f"{time.strftime('%H:%M:%S', now)} Lux: {current_lux}, PIRs: [{pir1_status},{pir2_status}], Suggested Light Level: {action}")
 
     except (KeyboardInterrupt, SystemExit):
         print("\nExiting program.")
