@@ -21,14 +21,14 @@ except serial.SerialException:
     exit()
 
 
-def get_final_light_command(timestamp, live_lux, live_pir1, live_pir2):
+def suggest_action(timestamp, live_lux, live_pir1, live_pir2):
     """
     Final decision function combining the ML model's context with live PIR data.
     """
     data = pd.DataFrame([(live_lux, timestamp % 86600)], columns=["ambience_lux", "seconds_of_day"])
     night_mode_active = luminosity_model.predict(data)
 
-    if night_mode_active==0:
+    if night_mode_active == 0:
         return '0' # OFF
     else:
         if live_pir1 == 1 or live_pir2 == 1:
@@ -47,19 +47,19 @@ while True:
             line = arduino.readline().decode('utf-8').rstrip()
             # Parse the data
             parts = line.split(',')
-            if len(parts) == 4:
-                uptime_ms = int(parts[0])
-                current_lux = float(parts[1])
-                pir1_status = int(parts[2])
-                pir2_status = int(parts[3])
+            if len(parts) == 3:
+                current_lux = float(parts[0])
+                pir1_status = int(parts[1])
+                pir2_status = int(parts[2])
 
-                # Get the final command
-                loctime = 16200 + time.time() + uptime_ms / 1000.00
-                final_command = get_final_light_command(loctime, current_lux, pir1_status, pir2_status)
-                # Send the command character back to the Arduino
-                arduino.write(final_command.encode())
-                # Optional: Print the status for debugging
-                print(f"Time: {time.strftime('%H:%M:%S', time.localtime(loctime))}, Lux: {current_lux}, PIRs: [{pir1_status},{pir2_status}], Suggested: {final_command}")
+                # Decide the action
+                now = time.localtime()
+                now_seconds = now.tm_hour * 3600 + now.tm_min * 60 + now.tm_sec
+                action = suggest_action(now_seconds, current_lux, pir1_status, pir2_status)
+                # Send the action command to the Arduino
+                arduino.write(action.encode())
+                # Print status for debugging
+                print(f"Time: {time.strftime('%H:%M:%S', now)}, Lux: {current_lux}, PIRs: [{pir1_status},{pir2_status}], Suggested Light Level: {action}")
 
     except (KeyboardInterrupt, SystemExit):
         print("\nExiting program.")

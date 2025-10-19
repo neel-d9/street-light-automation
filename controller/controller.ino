@@ -31,9 +31,7 @@ void loop() {
   int pirState2 = digitalRead(pirPin2);
 
   // === Send sensor data to Raspberry Pi ===
-  // Format: timestamp,lux,pir1,pir2
-  Serial.print(millis());
-  Serial.print(",");
+  // Format: lux,pir1,pir2
   Serial.print(lux);
   Serial.print(",");
   Serial.print(pirState1);
@@ -47,7 +45,7 @@ void loop() {
   }
 
   // Wait for half a second before sending the next reading
-  delay(500);
+  delay(1000);
 }
 
 // Function to control the lights based on the received command
@@ -55,11 +53,13 @@ void controlLights(char cmd) {
   if (cmd == '0') { // OFF
     digitalWrite(ledPin1, LOW);
     digitalWrite(ledPin2, LOW);
-  } else if (cmd == '1') { // DIM
+  }
+  else if (cmd == '1') { // DIM
     // Use analogWrite for a dim effect (e.g., 30% brightness)
-    analogWrite(ledPin1, 75); 
+    analogWrite(ledPin1, 75);
     analogWrite(ledPin2, 75);
-  } else if (cmd == '2') { // BRIGHT
+  }
+  else if (cmd == '2') { // BRIGHT
     digitalWrite(ledPin1, HIGH);
     digitalWrite(ledPin2, HIGH);
   }
