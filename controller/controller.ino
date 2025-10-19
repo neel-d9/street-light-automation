@@ -17,7 +17,7 @@ void setup() {
 
   // Initialize sensors and outputs
   Wire.begin();
-  lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0x5C);
+  lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE_2, 0x5C);
   pinMode(pirPin1, INPUT);
   pinMode(pirPin2, INPUT);
   pinMode(ledPin1, OUTPUT);
