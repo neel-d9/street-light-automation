@@ -1,20 +1,17 @@
-
 import serial
 import time
 import joblib
 import pandas as pd
 
-# --- Initialization ---
-# Load the simple model you trained only on luminosity data.
+# Load the model trained on luminosity data.
+model_file = "street_light_model.joblib"
 try:
-    luminosity_model = joblib.load('model/street_light_model.pkl')
+    luminosity_model = joblib.load(f'models/{model_file}')
 except FileNotFoundError:
-    print("Error: Model file 'street_light_model.pkl' not found.")
+    print(f"Error: Model file '{model_file}' not found in 'models/' directory.")
     exit()
 
 # Set up the serial connection to the Arduino
-# Note: The port name '/dev/ttyUSB0' might be different on your system.
-# Common names are /dev/ttyACM0 or /dev/ttyUSB1.
 try:
     arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)
     time.sleep(2) # Wait for the connection to establish
