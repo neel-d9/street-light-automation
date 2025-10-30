@@ -17,7 +17,7 @@ void setup() {
 
   // Initialize sensors and outputs
   Wire.begin();
-  lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE_2, 0x5C);
+  lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE_2);
   pinMode(pirPin1, INPUT);
   pinMode(pirPin2, INPUT);
   pinMode(ledPin1, OUTPUT);
@@ -45,7 +45,7 @@ void loop() {
   }
 
   // Wait for half a second before sending the next reading
-  delay(1000);
+  delay(500);
 }
 
 // Function to control the lights based on the received command
@@ -56,8 +56,8 @@ void controlLights(char cmd) {
   }
   else if (cmd == '1') { // DIM
     // Use analogWrite for a dim effect (e.g., 30% brightness)
-    analogWrite(ledPin1, 75);
-    analogWrite(ledPin2, 75);
+    analogWrite(ledPin1, 50);
+    analogWrite(ledPin2, 50);
   }
   else if (cmd == '2') { // BRIGHT
     digitalWrite(ledPin1, HIGH);
