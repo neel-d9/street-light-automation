@@ -11,32 +11,51 @@ const int pirPin2 = 3;
 const int ledPin1 = 9; // Corresponds to PIR1
 const int ledPin2 = 10; // Corresponds to PIR2
 
+volatile int pir1Triggered = 0;
+volatile int pir2Triggered = 0;
+unsigned long lastLuxRead = 0;
+const unsigned long luxInterval = 50;
+
+void pir1ISR() { pir1Triggered = 1; }
+void pir2ISR() { pir2Triggered = 1; }
+
 void setup() {
-  // Start serial communication at a 9600 baud rate
-  Serial.begin(9600);
+  // Start serial communication at a 115200 baud rate
+  Serial.begin(115200);
 
   // Initialize sensors and outputs
   Wire.begin();
-  lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE_2);
+  lightMeter.begin(BH1750::CONTINUOUS_LOW_RES_MODE);
   pinMode(pirPin1, INPUT);
   pinMode(pirPin2, INPUT);
   pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
+
+  attachInterrupt(digitalPinToInterrupt(pirPin1), pir1ISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(pirPin2), pir2ISR, RISING);
 }
 
 void loop() {
   // === Read all sensor data ===
-  float lux = lightMeter.readLightLevel();
-  int pirState1 = digitalRead(pirPin1);
-  int pirState2 = digitalRead(pirPin2);
+  if(millis() - lastLuxRead >= luxInterval) {
+    float lux = lightMeter.readLightLevel();
+    int pirState1 = pir1Triggered;
+    int pirState2 = pir2Triggered;
+  
+    // === Send sensor data to Raspberry Pi ===
+    // Format: lux,pir1,pir2
+    Serial.print(lux);
+    Serial.print(",");
+    Serial.print(pirState1);
+    Serial.print(",");
+    Serial.println(pirState2);
 
-  // === Send sensor data to Raspberry Pi ===
-  // Format: lux,pir1,pir2
-  Serial.print(lux);
-  Serial.print(",");
-  Serial.print(pirState1);
-  Serial.print(",");
-  Serial.println(pirState2);
+    // reset
+    pir1Triggered = 0;
+    pir2Triggered = 0;
+
+    lastLuxRead = millis();
+  }
 
   // === Listen for a command from the Raspberry Pi ===
   if (Serial.available() > 0) {
