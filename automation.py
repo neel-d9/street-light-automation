@@ -13,7 +13,7 @@ except FileNotFoundError:
 
 # Set up the serial connection to the Arduino
 try:
-    arduino = serial.Serial(port='/dev/ttyACM1', baudrate=9600, timeout=1)
+    arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)
     time.sleep(2) # Wait for the connection to establish
     print("Connected to Arduino.")
 except serial.SerialException:

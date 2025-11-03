@@ -45,7 +45,7 @@ void loop() {
   }
 
   // Wait for half a second before sending the next reading
-  delay(500);
+  delay(250);
 }
 
 // Function to control the lights based on the received command
@@ -56,8 +56,8 @@ void controlLights(char cmd) {
   }
   else if (cmd == '1') { // DIM
     // Use analogWrite for a dim effect (e.g., 30% brightness)
-    analogWrite(ledPin1, 50);
-    analogWrite(ledPin2, 50);
+    analogWrite(ledPin1, 10);
+    analogWrite(ledPin2, 10);
   }
   else if (cmd == '2') { // BRIGHT
     digitalWrite(ledPin1, HIGH);
