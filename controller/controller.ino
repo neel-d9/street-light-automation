@@ -15,9 +15,18 @@ volatile int pir1Triggered = 0;
 volatile int pir2Triggered = 0;
 unsigned long lastLuxRead = 0;
 const unsigned long luxInterval = 50;
+unsigned long lastMotionTime = 0;
+const unsigned long motionTimeout = 3000;
 
-void pir1ISR() { pir1Triggered = 1; }
-void pir2ISR() { pir2Triggered = 1; }
+void pir1ISR() {
+  pir1Triggered = 1;
+  lastMotionTime = millis();
+}
+
+void pir2ISR() {
+  pir2Triggered = 1;
+  lastMotionTime = millis();
+}
 
 void setup() {
   // Start serial communication at a 115200 baud rate
@@ -37,11 +46,11 @@ void setup() {
 
 void loop() {
   // === Read all sensor data ===
-  if(millis() - lastLuxRead >= luxInterval) {
+  if (millis() - lastLuxRead >= luxInterval) {
     float lux = lightMeter.readLightLevel();
     int pirState1 = pir1Triggered;
     int pirState2 = pir2Triggered;
-  
+
     // === Send sensor data to Raspberry Pi ===
     // Format: lux,pir1,pir2
     Serial.print(lux);
@@ -74,9 +83,17 @@ void controlLights(char cmd) {
     digitalWrite(ledPin2, LOW);
   }
   else if (cmd == '1') { // DIM
-    // Use analogWrite for a dim effect (e.g., 30% brightness)
-    analogWrite(ledPin1, 10);
-    analogWrite(ledPin2, 10);
+    // Check if motion timeout is active before dimming
+    if (millis() - lastMotionTime < motionTimeout) {
+      // Motion was recent, stay BRIGHT
+      digitalWrite(ledPin1, HIGH);
+      digitalWrite(ledPin2, HIGH);
+    }
+    else {
+      // No recent motion, go to DIM
+      analogWrite(ledPin1, 10);
+      analogWrite(ledPin2, 10);
+    }
   }
   else if (cmd == '2') { // BRIGHT
     digitalWrite(ledPin1, HIGH);
