@@ -217,3 +217,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Custom
+*.db
+*.sqlite3
+/iot-env/
+/venvs/
+dashboard/frontend/node_modules/
+dashboard/frontend/dist/
+dashboard/frontend/.vite/
+.DS_Store
