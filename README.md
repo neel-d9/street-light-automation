@@ -142,6 +142,19 @@ curl -X POST -H "Content-Type: application/json" -d "{\"username\": \"user\", \"
 curl -X POST -H "Content-Type: application/json" -d "{\"username\": \"provider\", \"password\": \"password\", \"role\": \"provider\"}" http://localhost:8000/create_user
 ```
 
+**For Windows Powershell 7:**
+
+```cmd
+# Admin User
+Invoke-RestMethod -Uri http://localhost:8000/create_user -Method Post -ContentType "application/json" -Body '{"username":"admin","password":"password","role":"admin"}'
+
+# Standard User
+Invoke-RestMethod -Uri http://localhost:8000/create_user -Method Post -ContentType "application/json" -Body '{"username":"user","password":"password","role":"user"}'
+
+# Provider
+Invoke-RestMethod -Uri http://localhost:8000/create_user -Method Post -ContentType "application/json" -Body '{"username":"provider","password":"password","role":"provider"}'
+```
+
 ---
 
 ### Implemented Features

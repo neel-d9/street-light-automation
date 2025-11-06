@@ -55,6 +55,9 @@ def get_admin_requests(db: Session = Depends(get_db)):
 
 @app.post("/create_user")
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    existing_user = db.query(models.User).filter(models.User.username == user.username).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Username already registered")
     db_user = models.User(username=user.username, password=user.password, role=user.role)
     db.add(db_user)
     db.commit()

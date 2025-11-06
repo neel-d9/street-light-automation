@@ -10,15 +10,17 @@ function App() {
   const { role } = useAuth();
 
   const renderPanel = () => {
+    if (!role) {
+      return <Login />;
+    }
+
     switch (role) {
       case 'admin':
         return <AdminPanel />;
-      case 'user':
-        return <UserPanel />;
       case 'provider':
         return <ProviderPanel />;
       default:
-        return <Login />;
+        return <UserPanel />;
     }
   };
 
