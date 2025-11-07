@@ -3,7 +3,6 @@ import Login from './components/Login';
 import AdminPanel from './components/AdminPanel';
 import UserPanel from './components/UserPanel';
 import ProviderPanel from './components/ProviderPanel';
-import Header from './components/Header';
 import './App.css';
 
 function App() {
@@ -26,7 +25,6 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
       <main className="container">
         {renderPanel()}
       </main>
