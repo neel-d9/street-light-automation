@@ -29,12 +29,20 @@ def suggest_action(timestamp, live_lux, live_pir1, live_pir2):
     night_mode_active = luminosity_model.predict(data)[0]
 
     if night_mode_active == 0:
-        return '0' # OFF
+        led1_action = '0'  # OFF
+        led2_action = '0'  # OFF
     else:
-        if live_pir1 == 1 or live_pir2 == 1:
-            return '2' # BRIGHT
+        if live_pir1 == 1:
+            led1_action = '2'  # BRIGHT
         else:
-            return '1' # DIM
+            led1_action = '1'  # DIM
+
+        if live_pir2 == 1:
+            led2_action = '2'  # BRIGHT
+        else:
+            led2_action = '1'  # DIM
+
+    return f"{led1_action},{led2_action}"
 
 # --- Main loop ---
 print("Beginning operation. Press Ctrl+C to exit.")

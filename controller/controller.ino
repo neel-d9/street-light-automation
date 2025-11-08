@@ -68,8 +68,14 @@ void loop() {
 
   // === Listen for a command from the Raspberry Pi ===
   if (Serial.available() > 0) {
-    char command = Serial.read();
-    controlLights(command);
+    String command = Serial.readStringUntil('\n');
+    command.trim();
+    int commaIndex = command.indexOf(',');
+    if (commaIndex != -1) {
+      char cmd1 = command.charAt(0);
+      char cmd2 = command.charAt(commaIndex + 1);
+      controlLights(cmd1, cmd2);
+    }
   }
 
   // Wait for half a second before sending the next reading
@@ -77,26 +83,26 @@ void loop() {
 }
 
 // Function to control the lights based on the received command
-void controlLights(char cmd) {
-  if (cmd == '0') { // OFF
+void controlLights(char cmd1, char cmd2) {
+  // Control LED 1
+  if (cmd1 == '0') { // OFF
     digitalWrite(ledPin1, LOW);
+  }
+  else if (cmd1 == '1') { // DIM
+    analogWrite(ledPin1, 10);
+  }
+  else if (cmd1 == '2') { // BRIGHT
+    digitalWrite(ledPin1, HIGH);
+  }
+
+  // Control LED 2
+  if (cmd2 == '0') { // OFF
     digitalWrite(ledPin2, LOW);
   }
-  else if (cmd == '1') { // DIM
-    // Check if motion timeout is active before dimming
-    if (millis() - lastMotionTime < motionTimeout) {
-      // Motion was recent, stay BRIGHT
-      digitalWrite(ledPin1, HIGH);
-      digitalWrite(ledPin2, HIGH);
-    }
-    else {
-      // No recent motion, go to DIM
-      analogWrite(ledPin1, 10);
-      analogWrite(ledPin2, 10);
-    }
+  else if (cmd2 == '1') { // DIM
+    analogWrite(ledPin2, 10);
   }
-  else if (cmd == '2') { // BRIGHT
-    digitalWrite(ledPin1, HIGH);
+  else if (cmd2 == '2') { // BRIGHT
     digitalWrite(ledPin2, HIGH);
   }
 }
