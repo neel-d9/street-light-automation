@@ -14,3 +14,19 @@ class RequestCreate(BaseModel):
     light_id: int
     type: str
     description: str
+
+class StreetlightBase(BaseModel):
+    name: str
+    status: str
+
+class StreetlightCreate(StreetlightBase):
+    pass
+
+class Streetlight(StreetlightBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+        
+class StreetlightStatusUpdate(BaseModel):
+    status: str

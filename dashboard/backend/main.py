@@ -53,6 +53,34 @@ def create_request(request: schemas.RequestCreate, db: Session = Depends(get_db)
 def get_admin_requests(db: Session = Depends(get_db)):
     return db.query(models.Issue).all()
 
+@app.get("/api/streetlights", response_model=list[schemas.Streetlight])
+def get_streetlights(db: Session = Depends(get_db)):
+    return db.query(models.Streetlight).all()
+
+
+@app.post("/api/streetlights", response_model=schemas.Streetlight)
+def create_streetlight(streetlight: schemas.StreetlightCreate, db: Session = Depends(get_db)):
+    db_streetlight = models.Streetlight(name=streetlight.name, status=streetlight.status)
+    db.add(db_streetlight)
+    db.commit()
+    db.refresh(db_streetlight)
+    return db_streetlight
+
+@app.patch("/api/streetlights/{streetlight_id}", response_model=schemas.Streetlight)
+def update_streetlight_status(
+    streetlight_id: int, 
+    streetlight_update: schemas.StreetlightStatusUpdate, 
+    db: Session = Depends(get_db)
+):
+    db_streetlight = db.query(models.Streetlight).filter(models.Streetlight.id == streetlight_id).first()
+    if db_streetlight is None:
+        raise HTTPException(status_code=404, detail="Streetlight not found")
+    
+    db_streetlight.status = streetlight_update.status
+    db.commit()
+    db.refresh(db_streetlight)
+    return db_streetlight
+
 @app.post("/create_user")
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(models.User).filter(models.User.username == user.username).first()

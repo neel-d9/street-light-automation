@@ -18,3 +18,10 @@ class Issue(Base):
     type = Column(String)
     description = Column(String)
     status = Column(String, default="pending")
+
+class Streetlight(Base):
+    __tablename__ = "streetlights"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True, unique=True)
+    status = Column(String, default="OFF")
