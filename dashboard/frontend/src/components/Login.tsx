@@ -22,7 +22,7 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.role);
+        login({ username, role: data.role });
         setMessage(`Login successful! Role: ${data.role}`);
         setIsError(false);
       } else {

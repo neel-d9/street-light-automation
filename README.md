@@ -160,27 +160,35 @@ Invoke-RestMethod -Uri http://localhost:8000/create_user -Method Post -ContentTy
 ### Implemented Features
 
 #### Backend (FastAPI)
-*   **Database:** SQLite managed with SQLAlchemy.
-*   **Tables:**
-    *   `Users`: Stores `id`, `username`, `password` (plaintext), and `role`.
-    *   `Issues`: Stores `id`, `submitted_by_user`, `light_id`, `type`, `description`, and `status`.
+*   **User Authentication:** Secure login for different roles (User, Admin).
+*   **Database Management:** SQLite with SQLAlchemy ORM.
+*   **Data Models:**
+    *   `Users`: Manages user credentials and roles.
+    *   `Streetlights`: Tracks the current status (`ON`/`OFF`) of each light.
+    *   `Issues`: Manages user-submitted issues and requests, including status (`pending`, `seen`, `approved`, `rejected`) and override times.
+    *   `Logs`: Records a timestamped history of every `ON`/`OFF` status change for each light.
 *   **API Endpoints:**
-    *   `POST /login`: Authenticates a user and returns their role.
-    *   `POST /create_user`: A utility endpoint to easily create new users for testing.
-    *   `POST /api/requests`: An endpoint for users to submit new issues or requests, which are saved with a "pending" status.
-    *   `GET /api/admin/requests`: An endpoint for admins to retrieve a list of all issues and requests from the database.
-*   **CORS:** Middleware is configured to allow requests from the frontend development server.
+    *   `POST /login`, `POST /create_user`: User management.
+    *   `GET`, `POST /api/streetlights`: Register and view streetlights.
+    *   `PATCH /api/streetlights/{id}`: Update a streetlight's current status.
+    *   `POST /api/requests`: Allows users to submit issues or requests.
+    *   `GET /api/admin/requests`: Allows admins to view all submissions.
+    *   `PATCH /api/requests/{id}`: Allows admins to approve, reject, or mark issues as seen.
+    *   `GET /api/users/{username}/requests`: Allows users to view the status of their own submissions.
+    *   `POST`, `GET /api/logs`: Records and retrieves historical status logs.
+    *   `GET /api/overrides/schedule`: Provides the automation script with a schedule of active, approved overrides.
 
 #### Frontend (React + TypeScript)
-*   **UI Framework:** React with TypeScript, built using Vite.
-*   **Styling:** A clean, modern look applied via CSS for forms, tables, buttons, and layout.
-*   **Routing:** `react-router-dom` (`BrowserRouter`) manages navigation.
-*   **Authentication & State Management:**
-    *   `AuthContext` provides global state for the current user's role.
-    *   Login state is persistent across page reloads using the browser's `localStorage`.
-*   **Components:**
-    *   `Header`: A persistent header displaying the app title, the logged-in user's role, and a "Logout" button.
-    *   `Login`: A form to authenticate users against the backend.
-    *   `UserPanel`: A dashboard for the "user" role with a form to submit new issues or requests.
-    *   `AdminPanel`: A dashboard for the "admin" role that fetches and displays all submitted issues in a table.
-    *   `ProviderPanel`: A placeholder dashboard for the "provider" role.
+*   **Role-Based Access:** The UI adapts based on whether a User or Admin is logged in.
+*   **User Panel:**
+    *   Form to submit new issues or requests for specific streetlights.
+    *   A dedicated view to track the live status (`Pending`, `Approved`, `Rejected`) of their submissions.
+*   **Admin Panel:**
+    *   A comprehensive table displaying all user submissions.
+    *   **Interactive Actions:**
+        *   "Mark as Seen" button for general issues.
+        *   "Approve" and "Reject" buttons for override requests.
+    *   **Override Time Modal:** A pop-up modal allows the admin to set a start and end time for approved requests.
+*   **Real-Time Updates:** Panels automatically refresh data after an action is performed.
+
+---

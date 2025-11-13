@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.sql import func
 from .database import Base
 
 class User(Base):
@@ -18,6 +19,8 @@ class Issue(Base):
     type = Column(String)
     description = Column(String)
     status = Column(String, default="pending")
+    override_start_time = Column(DateTime, nullable=True)
+    override_end_time = Column(DateTime, nullable=True)
 
 class Streetlight(Base):
     __tablename__ = "streetlights"
@@ -25,3 +28,11 @@ class Streetlight(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True, unique=True)
     status = Column(String, default="OFF")
+
+class Log(Base):
+    __tablename__ = "logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    streetlight_id = Column(Integer, ForeignKey("streetlights.id"))
+    status = Column(String)
+    timestamp = Column(DateTime(timezone=True), server_default=func.now())

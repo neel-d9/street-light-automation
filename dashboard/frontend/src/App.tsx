@@ -6,14 +6,14 @@ import ProviderPanel from './components/ProviderPanel';
 import './App.css';
 
 function App() {
-  const { role } = useAuth();
+  const { user } = useAuth();
 
   const renderPanel = () => {
-    if (!role) {
+    if (!user) {
       return <Login />;
     }
 
-    switch (role) {
+    switch (user.role) {
       case 'admin':
         return <AdminPanel />;
       case 'provider':

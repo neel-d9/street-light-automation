@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from datetime import datetime
+from typing import Optional
 
 class UserCreate(BaseModel):
     username: str
@@ -15,6 +17,11 @@ class RequestCreate(BaseModel):
     type: str
     description: str
 
+class RequestUpdate(BaseModel):
+    status: str
+    override_start_time: Optional[datetime] = None
+    override_end_time: Optional[datetime] = None
+
 class StreetlightBase(BaseModel):
     name: str
     status: str
@@ -30,3 +37,17 @@ class Streetlight(StreetlightBase):
         
 class StreetlightStatusUpdate(BaseModel):
     status: str
+
+class LogBase(BaseModel):
+    streetlight_id: int
+    status: str
+
+class LogCreate(LogBase):
+    pass
+
+class Log(LogBase):
+    id: int
+    timestamp: datetime
+
+    class Config:
+        from_attributes = True
