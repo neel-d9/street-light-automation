@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
+const API_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000';
+
 interface Issue {
   id: number;
   light_id: number;
@@ -21,7 +23,7 @@ const UserPanel = () => {
   const fetchUserRequests = async () => {
     if (!user) return;
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${user.username}/requests`);
+      const response = await fetch(`${API_URL}/api/users/${user.username}/requests`);
       if (response.ok) {
         const data = await response.json();
         setUserRequests(data);
@@ -47,7 +49,7 @@ const UserPanel = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/requests', {
+      const response = await fetch(`${API_URL}/api/requests`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

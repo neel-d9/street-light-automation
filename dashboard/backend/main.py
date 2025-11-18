@@ -4,15 +4,23 @@ from . import models, schemas, database
 from .database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
+import os
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    # dotenv is optional in production — env vars can be set by the environment
+    pass
+
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")
+BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-]
+origins = [FRONTEND_URL]
 
 app.add_middleware(
     CORSMiddleware,
@@ -77,10 +85,10 @@ def get_streetlights(db: Session = Depends(get_db)):
 
 @app.post("/api/streetlights", response_model=schemas.Streetlight)
 def create_streetlight(streetlight: schemas.StreetlightCreate, db: Session = Depends(get_db)):
-    existing_light = db.query(models.Streetlight).filter(models.Streetlight.id == streetlight.id).first() #changed
-    if existing_light: #changed
-        raise HTTPException(status_code=400, detail="Streetlight ID already registered") #changed
-    db_streetlight = models.Streetlight(id=streetlight.id, status=streetlight.status) #changed
+    existing_light = db.query(models.Streetlight).filter(models.Streetlight.id == streetlight.id).first() 
+    if existing_light: 
+        raise HTTPException(status_code=400, detail="Streetlight ID already registered") 
+    db_streetlight = models.Streetlight(id=streetlight.id, status=streetlight.status) 
     db.add(db_streetlight)
     db.commit()
     db.refresh(db_streetlight)
