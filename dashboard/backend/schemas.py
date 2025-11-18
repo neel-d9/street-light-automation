@@ -23,11 +23,10 @@ class RequestUpdate(BaseModel):
     override_end_time: Optional[datetime] = None
 
 class StreetlightBase(BaseModel):
-    name: str
-    status: str
+    status: str #changed
 
 class StreetlightCreate(StreetlightBase):
-    pass
+    id: int #changed
 
 class Streetlight(StreetlightBase):
     id: int

@@ -24,9 +24,7 @@ class Issue(Base):
 
 class Streetlight(Base):
     __tablename__ = "streetlights"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True, unique=True)
+    id = Column(Integer, primary_key=True, unique=True)
     status = Column(String, default="OFF")
 
 class Log(Base):

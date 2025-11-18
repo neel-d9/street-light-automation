@@ -77,7 +77,10 @@ def get_streetlights(db: Session = Depends(get_db)):
 
 @app.post("/api/streetlights", response_model=schemas.Streetlight)
 def create_streetlight(streetlight: schemas.StreetlightCreate, db: Session = Depends(get_db)):
-    db_streetlight = models.Streetlight(name=streetlight.name, status=streetlight.status)
+    existing_light = db.query(models.Streetlight).filter(models.Streetlight.id == streetlight.id).first() #changed
+    if existing_light: #changed
+        raise HTTPException(status_code=400, detail="Streetlight ID already registered") #changed
+    db_streetlight = models.Streetlight(id=streetlight.id, status=streetlight.status) #changed
     db.add(db_streetlight)
     db.commit()
     db.refresh(db_streetlight)
@@ -85,14 +88,14 @@ def create_streetlight(streetlight: schemas.StreetlightCreate, db: Session = Dep
 
 @app.patch("/api/streetlights/{streetlight_id}", response_model=schemas.Streetlight)
 def update_streetlight_status(
-    streetlight_id: int, 
-    streetlight_update: schemas.StreetlightStatusUpdate, 
+    streetlight_id: int,
+    streetlight_update: schemas.StreetlightStatusUpdate,
     db: Session = Depends(get_db)
 ):
     db_streetlight = db.query(models.Streetlight).filter(models.Streetlight.id == streetlight_id).first()
     if db_streetlight is None:
         raise HTTPException(status_code=404, detail="Streetlight not found")
-    
+
     db_streetlight.status = streetlight_update.status
     db.commit()
     db.refresh(db_streetlight)
