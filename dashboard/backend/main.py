@@ -1,19 +1,28 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
+from sqlalchemy import desc
 from . import models, schemas, database
 from .database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
+import os
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    # dotenv is optional in production — env vars can be set by the environment
+    pass
+
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")
+BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-]
+origins = [FRONTEND_URL]
 
 app.add_middleware(
     CORSMiddleware,
