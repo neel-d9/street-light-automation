@@ -116,6 +116,7 @@ const AdminPanel = () => {
             dateStr: new Date(event.end_time).toLocaleString()
           });
         });
+        formattedData.sort((a, b) => a.time - b.time);
         setTimelineData(formattedData);
       }
     } catch (error) {

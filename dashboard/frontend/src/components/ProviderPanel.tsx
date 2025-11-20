@@ -90,7 +90,7 @@ const ProviderPanel = () => {
                             dateStr: new Date(event.end_time).toLocaleString()
                         });
                     });
-
+                    formattedPoints.sort((a, b) => a.time - b.time);
                     setGraphData(formattedPoints);
                 }
             } catch (error) {
@@ -100,7 +100,6 @@ const ProviderPanel = () => {
         fetchHistory();
     }, [selectedLightId, timePeriod]);
 
-    // --- 3. Calculate Power Stats (Memoized) ---
     const stats = useMemo(() => {
         if (!rawEvents || rawEvents.length === 0) {
             return { smartKWh: 0, standardKWh: 0, savings: 0, activeHours: 0 };
