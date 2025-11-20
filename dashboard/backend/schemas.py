@@ -23,17 +23,17 @@ class RequestUpdate(BaseModel):
     override_end_time: Optional[datetime] = None
 
 class StreetlightBase(BaseModel):
-    status: str 
+    status: str
 
 class StreetlightCreate(StreetlightBase):
-    id: int 
+    id: int
 
 class Streetlight(StreetlightBase):
     id: int
 
     class Config:
         from_attributes = True
-        
+
 class StreetlightStatusUpdate(BaseModel):
     status: str
 
@@ -42,7 +42,7 @@ class LogBase(BaseModel):
     status: str
 
 class LogCreate(LogBase):
-    pass
+    timestamp: datetime
 
 class Log(LogBase):
     id: int
