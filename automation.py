@@ -2,10 +2,17 @@ import serial
 import time
 import joblib
 import pandas as pd
+import os
 import requests
 from datetime import datetime, timezone
 
-API_URL = "http://localhost:8000/api"
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
+
+API_URL = os.environ.get("BACKEND_URL", "http://localhost:8000").rstrip("/") + "/api"
 
 override_schedule = []
 active_overrides = set()
@@ -86,10 +93,10 @@ def register_streetlights():
     """
     for i in range(1, 3):
         try:
-            response = requests.post(f"{API_URL}/streetlights", json={"id": i, "status": "OFF"}) #changed
+            response = requests.post(f"{API_URL}/streetlights", json={"id": i, "status": "OFF"}) 
             if response.status_code == 200:
                 print(f"Streetlight {i} registered successfully.")
-            elif response.status_code == 400 and "Streetlight ID already registered" in response.text: #changed
+            elif response.status_code == 400 and "Streetlight ID already registered" in response.text: 
                  print(f"Streetlight {i} is already registered.")
             else:
                 response.raise_for_status()

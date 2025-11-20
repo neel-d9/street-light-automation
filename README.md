@@ -60,20 +60,15 @@ cd street-light-automation
 ```
 
 **b. Create a Python virtual environment:**
-*   **On Linux/macOS:**
-    ```bash
-    python3 -m venv ~/venvs/iot-env
-    ```
-*   **On Windows (CMD/PowerShell):**
-    ```bash
-    python -m venv %USERPROFILE%\venvs\iot-env
-    ```
+```bash
+python3 -m venv .venv
+```
 
 **c. Install all dependencies:**
 *   **On Linux/macOS:**
     ```bash
     # Activate the virtual environment
-    source ~/venvs/iot-env/bin/activate
+    source .venv/bin/activate
 
     # Install Python packages
     pip install -r requirements.txt
@@ -85,7 +80,7 @@ cd street-light-automation
 *   **On Windows (CMD/PowerShell):**
     ```bash
     # Activate the virtual environment
-    %USERPROFILE%\venvs\iot-env\Scripts\activate
+    .venv\Scripts\activate
 
     # Install Python packages
     pip install -r requirements.txt

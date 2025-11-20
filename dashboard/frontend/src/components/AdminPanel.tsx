@@ -10,6 +10,8 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
+const API_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000';
+
 interface Issue {
   id: number;
   submitted_by_user: string;
@@ -64,7 +66,7 @@ const AdminPanel = () => {
   // --- Data Fetching ---
   const fetchIssues = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/admin/requests');
+      const response = await fetch(`${API_URL}/api/admin/requests`);
       if (response.ok) {
         const data = await response.json();
         setIssues(data);
@@ -150,7 +152,7 @@ const AdminPanel = () => {
       if (startTime) body.override_start_time = new Date(startTime).toISOString();
       if (endTime) body.override_end_time = new Date(endTime).toISOString();
 
-      const response = await fetch(`http://localhost:8000/api/requests/${id}`, {
+      const response = await fetch(`${API_URL}/api/requests/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
