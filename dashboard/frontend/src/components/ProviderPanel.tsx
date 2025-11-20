@@ -13,6 +13,8 @@ import {
     Cell
 } from 'recharts';
 
+const API_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000';
+
 interface Streetlight {
     id: number;
     status: string;
@@ -43,7 +45,7 @@ const ProviderPanel = () => {
     useEffect(() => {
         const fetchStreetlights = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/streetlights');
+                const response = await fetch(`${API_URL}/api/streetlights`);
                 if (response.ok) {
                     const data = await response.json();
                     setStreetlights(data);

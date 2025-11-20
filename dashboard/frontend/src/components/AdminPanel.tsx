@@ -78,7 +78,7 @@ const AdminPanel = () => {
 
   const fetchStreetlights = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/streetlights');
+      const response = await fetch(`${API_URL}/api/streetlights`);
       if (response.ok) {
         const data = await response.json();
         setStreetlights(data);
@@ -185,7 +185,7 @@ const AdminPanel = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:8000/api/streetlights', {
+      const response = await fetch(`${API_URL}/api/streetlights`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: parseInt(newLightId), status: newLightStatus }),
