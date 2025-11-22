@@ -6,10 +6,6 @@ from . import models, schemas, database
 from .database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
-import os
-
-FRONTEND_URL = ""
-BACKEND_URL = ""
 
 models.Base.metadata.create_all(bind=engine)
 
