@@ -65,7 +65,7 @@ const ProviderPanel = () => {
 
         const fetchHistory = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/analytics/${selectedLightId}/timeline?duration=${timePeriod}`);
+                const response = await fetch(`${API_URL}/api/analytics/${selectedLightId}/timeline?duration=${timePeriod}`);
                 if (response.ok) {
                     const data: TimelineEvent[] = await response.json();
                     setRawEvents(data); // Store raw intervals for math

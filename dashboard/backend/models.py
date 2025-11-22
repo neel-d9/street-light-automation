@@ -21,6 +21,7 @@ class Issue(Base):
     status = Column(String, default="pending")
     override_start_time = Column(DateTime, nullable=True)
     override_end_time = Column(DateTime, nullable=True)
+    
 
 class Streetlight(Base):
     __tablename__ = "streetlights"

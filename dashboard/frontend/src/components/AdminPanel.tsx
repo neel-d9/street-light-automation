@@ -96,7 +96,8 @@ const AdminPanel = () => {
 
     // 1. Fetch Timeline (Graph)
     try {
-      const response = await fetch(`http://localhost:8000/api/analytics/${chartLightId}/timeline?duration=${chartDuration}`);
+      console.log("Hello world")
+      const response = await fetch(`${API_URL}/api/analytics/${chartLightId}/timeline?duration=${chartDuration}`);
       if (response.ok) {
         const data: TimelineEvent[] = await response.json();
         const formattedData: any[] = [];
@@ -125,7 +126,7 @@ const AdminPanel = () => {
 
     // 2. Fetch Traffic Insights (Text/Grid)
     try {
-      const response = await fetch(`http://localhost:8000/api/analytics/${chartLightId}/traffic?duration=${chartDuration}`);
+      const response = await fetch(`${API_URL}/api/analytics/${chartLightId}/traffic?duration=${chartDuration}`);
       if (response.ok) {
         const data = await response.json();
         // Sort descending to show newest first
