@@ -7,6 +7,7 @@ from .database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
 import os
+import time
 
 try:
     from dotenv import load_dotenv
@@ -152,7 +153,7 @@ def get_user_requests(username: str, db: Session = Depends(get_db)):
 
 @app.get("/api/overrides/schedule")
 def get_active_overrides(db: Session = Depends(get_db)):
-    now = datetime.utcnow()
+    now = time.utcnow()
     return db.query(models.Issue).filter(
         models.Issue.status == "Approved",
         models.Issue.override_start_time <= now,
