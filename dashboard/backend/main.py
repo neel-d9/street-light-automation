@@ -73,7 +73,9 @@ def update_request(request_id: int, request_update: schemas.RequestUpdate, db: S
         db_issue.override_start_time = request_update.override_start_time
     if request_update.override_end_time:
         db_issue.override_end_time = request_update.override_end_time
-
+    
+    print(f"{db_issue.light_id}, {db_issue.override_start_time}, {db_issue.override_end_time}")
+    
     db.commit()
     db.refresh(db_issue)
     return db_issue
