@@ -115,39 +115,39 @@ The application will be running at `http://localhost:5173`.
 **For Linux, macOS, or Windows PowerShell:**
 ```bash
 # Admin User
-curl -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": "password", "role": "admin"}' http://localhost:8000/create_user
+curl -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": "password", "role": "admin"}' http://localhost:8000/api/register
 
 # Standard User
-curl -X POST -H "Content-Type: application/json" -d '{"username": "user", "password": "password", "role": "user"}' http://localhost:8000/create_user
+curl -X POST -H "Content-Type: application/json" -d '{"username": "user", "password": "password", "role": "user"}' http://localhost:8000/api/register
 
 # Provider
-curl -X POST -H "Content-Type: application/json" -d '{"username": "provider", "password": "password", "role": "provider"}' http://localhost:8000/create_user
+curl -X POST -H "Content-Type: application/json" -d '{"username": "provider", "password": "password", "role": "provider"}' http://localhost:8000/api/register
 ```
 
 **For Windows Command Prompt (CMD):**
 
 ```cmd
 # Admin User
-curl -X POST -H "Content-Type: application/json" -d "{\"username\": \"admin\", \"password\": \"password\", \"role\": \"admin\"}" http://localhost:8000/create_user
+curl -X POST -H "Content-Type: application/json" -d "{\"username\": \"admin\", \"password\": \"password\", \"role\": \"admin\"}" http://localhost:8000/api/register
 
 # Standard User
-curl -X POST -H "Content-Type: application/json" -d "{\"username\": \"user\", \"password\": \"password\", \"role\": \"user\"}" http://localhost:8000/create_user
+curl -X POST -H "Content-Type: application/json" -d "{\"username\": \"user\", \"password\": \"password\", \"role\": \"user\"}" http://localhost:8000/api/register
 
 # Provider
-curl -X POST -H "Content-Type: application/json" -d "{\"username\": \"provider\", \"password\": \"password\", \"role\": \"provider\"}" http://localhost:8000/create_user
+curl -X POST -H "Content-Type: application/json" -d "{\"username\": \"provider\", \"password\": \"password\", \"role\": \"provider\"}" http://localhost:8000/api/register
 ```
 
 **For Windows Powershell 7:**
 
 ```cmd
 # Admin User
-Invoke-RestMethod -Uri http://localhost:8000/create_user -Method Post -ContentType "application/json" -Body '{"username":"admin","password":"password","role":"admin"}'
+Invoke-RestMethod -Uri http://localhost:8000/api/register -Method Post -ContentType "application/json" -Body '{"username":"admin","password":"password","role":"admin"}'
 
 # Standard User
-Invoke-RestMethod -Uri http://localhost:8000/create_user -Method Post -ContentType "application/json" -Body '{"username":"user","password":"password","role":"user"}'
+Invoke-RestMethod -Uri http://localhost:8000/api/register -Method Post -ContentType "application/json" -Body '{"username":"user","password":"password","role":"user"}'
 
 # Provider
-Invoke-RestMethod -Uri http://localhost:8000/create_user -Method Post -ContentType "application/json" -Body '{"username":"provider","password":"password","role":"provider"}'
+Invoke-RestMethod -Uri http://localhost:8000/api/register -Method Post -ContentType "application/json" -Body '{"username":"provider","password":"password","role":"provider"}'
 ```
 
 ---

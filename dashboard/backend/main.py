@@ -41,7 +41,7 @@ def get_db():
 
 # --- AUTH & REQUESTS ---
 
-@app.post("/login")
+@app.post("/api/login")
 def login(user_login: schemas.UserLogin, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == user_login.username).first()
     if not user or user.password != user_login.password:
@@ -118,7 +118,7 @@ def update_streetlight_status(
 
 # --- USERS & LOGS ---
 
-@app.post("/create_user")
+@app.post("/api/register")
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(models.User).filter(models.User.username == user.username).first()
     if existing_user:
