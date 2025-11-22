@@ -8,15 +8,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
 import os
 
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except Exception:
-    # dotenv is optional in production — env vars can be set by the environment
-    pass
-
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "")
-BACKEND_URL = os.environ.get("BACKEND_URL", "")
+FRONTEND_URL = ""
+BACKEND_URL = ""
 
 models.Base.metadata.create_all(bind=engine)
 
