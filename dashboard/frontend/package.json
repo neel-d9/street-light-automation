@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "deploy": "sudo cp -r dist/* /var/www/html/dashboard/",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const API_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000';
+const API_URL = (import.meta.env.VITE_API_URL as string) || '';
 
 const Login = () => {
   const [username, setUsername] = useState('');

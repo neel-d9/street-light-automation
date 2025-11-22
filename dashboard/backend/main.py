@@ -15,14 +15,14 @@ except Exception:
     # dotenv is optional in production — env vars can be set by the environment
     pass
 
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")
-BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "")
+BACKEND_URL = os.environ.get("BACKEND_URL", "")
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = [FRONTEND_URL]
+origins = ["http://streetlight.local"]
 
 app.add_middleware(
     CORSMiddleware,
