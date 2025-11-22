@@ -82,7 +82,7 @@ def log_status_change(light_id, status):
     Log a status change event to the database via the API.
     """
     try:
-        response = requests.post(f"{API_URL}/logs", json={"streetlight_id": light_id, "status": status})
+        response = requests.post(f"{API_URL}/logs", json={"streetlight_id": light_id, "status": status, "timestamp": time.localtime()})
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error logging status for streetlight {light_id}: {e}")
