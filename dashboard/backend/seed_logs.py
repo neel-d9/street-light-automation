@@ -1,9 +1,8 @@
 import requests
 import random
 from datetime import datetime, timedelta
-import os
 
-API_URL = os.environ.get("BACKEND_URL", "http://localhost:8001").rstrip("/")
+API_URL = "http://localhost:8001"
 
 def generate_and_upload_logs():
     light_ids = [1, 2]

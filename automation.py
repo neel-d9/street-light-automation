@@ -2,17 +2,10 @@ import serial
 import time
 import joblib
 import pandas as pd
-import os
 import requests
-from datetime import datetime, timezone
+from datetime import datetime
 
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except Exception:
-    pass
-
-API_URL = os.environ.get("BACKEND_URL", "http://localhost:8001").rstrip("/")
+API_URL = "http://localhost:8001"
 
 override_schedule = []
 active_overrides = set()
