@@ -5,6 +5,22 @@ import os
 
 API_URL = os.environ.get("BACKEND_URL", "http://localhost:8000").rstrip("/")
 
+def register_streetlights():
+    for i in [1, 2]:
+        try:
+            response = requests.post(
+                f"{API_URL}/api/streetlights",
+                json={"id": i, "status": "OFF"}
+            )
+            if response.status_code == 200:
+                print(f"Streetlight {i} registered.")
+            elif response.status_code == 400 and "already registered" in response.text:
+                print(f"Streetlight {i} already registered.")
+            else:
+                print(f"Failed to register streetlight {i}: {response.text}")
+        except Exception as e:
+            print(f"Error registering streetlight {i}: {e}")
+
 def generate_and_upload_logs():
     light_ids = [1, 2]
 
@@ -64,4 +80,5 @@ def generate_and_upload_logs():
     print("Data seeding completed.")
 
 if __name__ == "__main__":
+    register_streetlights()
     generate_and_upload_logs()
