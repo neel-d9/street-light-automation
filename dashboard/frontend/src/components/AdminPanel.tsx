@@ -151,8 +151,8 @@ const AdminPanel = () => {
   const handleUpdateRequest = async (id: number, status: string, startTime?: string, endTime?: string) => {
     try {
       const body: { status: string; override_start_time?: string; override_end_time?: string } = { status };
-      if (startTime) body.override_start_time = new Date(startTime).toISOString();
-      if (endTime) body.override_end_time = new Date(endTime).toISOString();
+      if (startTime) body.override_start_time = startTime;
+      if (endTime) body.override_end_time = endTime;
 
       const response = await fetch(`${API_URL}/api/requests/${id}`, {
         method: 'PATCH',

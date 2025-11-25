@@ -163,7 +163,7 @@ Invoke-RestMethod -Uri http://localhost:8000/api/register -Method Post -ContentT
     *   `Issues`: Manages user-submitted issues and requests, including status (`pending`, `seen`, `approved`, `rejected`) and override times.
     *   `Logs`: Records a timestamped history of every `ON`/`OFF` status change for each light.
 *   **API Endpoints:**
-    *   `POST /login`, `POST /create_user`: User management.
+    *   `POST /api/login`, `POST /api/register`: User management.
     *   `GET`, `POST /api/streetlights`: Register and view streetlights.
     *   `PATCH /api/streetlights/{id}`: Update a streetlight's current status.
     *   `POST /api/requests`: Allows users to submit issues or requests.
