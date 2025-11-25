@@ -1,11 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import desc
-from sqlalchemy import desc
-from . import models, schemas, database
+from . import models, schemas
 from .database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime, timedelta,timezone
+from datetime import datetime, timedelta
 import os
 
 try:
