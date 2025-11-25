@@ -3,7 +3,7 @@ import random
 from datetime import datetime, timedelta
 import os
 
-API_URL = os.environ.get("BACKEND_URL", "http://localhost:8000").rstrip("/") + "/api"
+API_URL = os.environ.get("BACKEND_URL", "http://localhost:8000").rstrip("/")
 
 def generate_and_upload_logs():
     light_ids = [1, 2]
@@ -51,7 +51,7 @@ def generate_and_upload_logs():
             }
 
             try:
-                response = requests.post(f"{API_URL}/logs", json=payload)
+                response = requests.post(f"{API_URL}/api/logs", json=payload)
                 if response.status_code == 200:
                     print(f"Logged: Light {light_id} | {status} | {current_time}")
                 else:
