@@ -17,7 +17,7 @@ API_URL = os.environ.get("BACKEND_URL", "http://localhost:8000").rstrip("/") + "
 override_schedule = []
 active_overrides = set()
 last_schedule_check = 0
-SCHEDULE_CHECK_INTERVAL = 900
+SCHEDULE_CHECK_INTERVAL = 30
 
 model_file = "street_light_model.joblib"
 try:
@@ -121,14 +121,14 @@ while True:
             except requests.exceptions.RequestException as e:
                 print(f"Error fetching override schedule: {e}")
 
-        now_utc = datetime.now(timezone.utc)
+        now = datetime.now()
         active_overrides.clear()
         for override in override_schedule:
-            start_time = datetime.fromisoformat(override['override_start_time'].replace('Z', '+00:00'))
-            end_time = datetime.fromisoformat(override['override_end_time'].replace('Z', '+00:00'))
+            start_time = datetime.fromisoformat(override['override_start_time'])
+            end_time = datetime.fromisoformat(override['override_end_time'])
             print(start_time)
             print(end_time)
-            if start_time <= now_utc <= end_time:
+            if start_time <= now <= end_time:
                 active_overrides.add(override['light_id'])
 
         if arduino.in_waiting > 0:

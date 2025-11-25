@@ -5,7 +5,7 @@ from sqlalchemy import desc
 from . import models, schemas, database
 from .database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,timezone
 import os
 
 try:
@@ -152,7 +152,7 @@ def get_user_requests(username: str, db: Session = Depends(get_db)):
 
 @app.get("/api/overrides/schedule")
 def get_active_overrides(db: Session = Depends(get_db)):
-    now = datetime.utcnow()
+    now = datetime.now()
     return db.query(models.Issue).filter(
         models.Issue.status == "Approved",
         models.Issue.override_start_time <= now,
@@ -162,7 +162,7 @@ def get_active_overrides(db: Session = Depends(get_db)):
 # --- ANALYTICS HELPER ---
 
 def calculate_cutoff(duration: str) -> datetime:
-    now = datetime.utcnow()
+    now = datetime.now()
     if duration == "1h":
         return now - timedelta(hours=1)
     elif duration == "6h":
@@ -216,8 +216,8 @@ def get_light_timeline(light_id: int, duration: str = "24h", db: Session = Depen
     timeline.append({
         "status": current_status,
         "start_time": current_start,
-        "end_time": datetime.utcnow(), # Cap at 'now'
-        "duration_minutes": (datetime.utcnow() - current_start).total_seconds() / 60
+        "end_time": datetime.now(), # Cap at 'now'
+        "duration_minutes": (datetime.now() - current_start).total_seconds() / 60
     })
 
     return timeline

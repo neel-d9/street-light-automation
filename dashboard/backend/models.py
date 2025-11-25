@@ -34,4 +34,4 @@ class Log(Base):
     id = Column(Integer, primary_key=True, index=True)
     streetlight_id = Column(Integer, ForeignKey("streetlights.id"))
     status = Column(String)
-    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    timestamp = Column(DateTime, server_default=func.now())
