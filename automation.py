@@ -60,7 +60,14 @@ def log_status_change(light_id, status):
     Log a status change event to the database via the API.
     """
     try:
-        response = requests.post(f"{API_URL}/api/logs", json={"streetlight_id": light_id, "status": status, "timestamp": time.localtime()})
+        response = requests.post(
+            f"{API_URL}/api/logs",
+            json={
+                "streetlight_id": light_id,
+                "status": status,
+                "timestamp": datetime.now().isoformat(timespec='seconds')
+            }
+        )
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error logging status for streetlight {light_id}: {e}")
@@ -104,8 +111,6 @@ while True:
         for override in override_schedule:
             start_time = datetime.fromisoformat(override['override_start_time'])
             end_time = datetime.fromisoformat(override['override_end_time'])
-            print(start_time)
-            print(end_time)
             if start_time <= now <= end_time:
                 active_overrides.add(override['light_id'])
 
