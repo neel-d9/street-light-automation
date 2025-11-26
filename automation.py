@@ -118,8 +118,6 @@ while True:
         for override in override_schedule:
             start_time = datetime.fromisoformat(override['override_start_time'])
             end_time = datetime.fromisoformat(override['override_end_time'])
-            print(start_time)
-            print(end_time)
             if start_time <= now <= end_time:
                 active_overrides.add(override['light_id'])
 
